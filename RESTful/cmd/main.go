@@ -4,6 +4,7 @@ import (
 	"github.com/NicoIzumi30/go-restaurant-app/internal/database"
 	"github.com/NicoIzumi30/go-restaurant-app/internal/delivery/rest"
 	mRepo "github.com/NicoIzumi30/go-restaurant-app/internal/repository/menu"
+	oRepo "github.com/NicoIzumi30/go-restaurant-app/internal/repository/order"
 	rUsecase "github.com/NicoIzumi30/go-restaurant-app/internal/usecase/resto"
 	"github.com/labstack/echo/v4"
 )
@@ -17,7 +18,8 @@ func main() {
 	e := echo.New()
 	db := database.GetDB(dbAddress)
 	menuRepo := mRepo.GetRepository(db)
-	restoUsecase := rUsecase.GetUsecase(menuRepo)
+	orderRepo := oRepo.GetRepository(db)
+	restoUsecase := rUsecase.GetUsecase(menuRepo, orderRepo)
 
 	h := rest.NewHandler(restoUsecase)
 	rest.LoadRoutes(e, h)
